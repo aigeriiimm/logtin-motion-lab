@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&display=swap');
+
+/* ---------- Look & feel (loaded after base.css, so it overrides) ---------- */
+:root { --accent:#1f7a5c; --accent-2:#6fd3a8; --glow:#1f7a5c33; }
+body { background:#0e1f1a; }
+.intro { position:relative; overflow:hidden; background:#0e1f1a; color:#e8f4ed; isolation:isolate; }
+.intro .eyebrow, .intro-footer { color:#8fc4aa; }
+.intro-copy>p:last-child { color:#b6d6c4; }
+.brand { color:#e8f4ed; }
+.intro h1, .card h2 { font-family:'Fraunces',Georgia,serif; font-weight:650; letter-spacing:-.03em; }
+.workspace { background:linear-gradient(160deg,#fbfcf9 0%,#eef5ef 100%); }
+
+/* Drifting aurora blobs: one slow ambient moment on the intro panel */
+.intro::before,.intro::after { content:""; position:absolute; z-index:-1; border-radius:50%; filter:blur(70px); opacity:.55; }
+.intro::before { width:420px; height:420px; background:#2fae82; top:-120px; right:-100px; animation:drift 14s ease-in-out infinite alternate; }
+.intro::after  { width:360px; height:360px; background:#1b5fa3; bottom:-100px; left:-80px; animation:drift 18s ease-in-out infinite alternate-reverse; }
+@keyframes drift { to { transform:translate(-60px,70px) scale(1.2); } }
+
+/* Card gets a soft lifted surface */
+.card-shell { padding:34px 34px 28px; border-radius:20px; background:#fff;
+  box-shadow:0 1px 0 #fff inset,0 24px 60px -24px #0e1f1a40,0 2px 6px #0e1f1a14; }
+
+/* ---------- 01 · Input focus ---------- */
+.field input { transition:border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease; }
+.field input:hover { background:#f6faf7; }
+.field input:focus { outline:none; border-color:var(--accent); background:#fff; box-shadow:0 0 0 4px var(--glow); }
+
+/* ---------- 02 · Button hover / press ---------- */
+.primary { position:relative; overflow:hidden; background:linear-gradient(135deg,#1f7a5c,#155a43);
+  transition:transform 180ms ease, box-shadow 180ms ease; }
+.primary::after { content:""; position:absolute; inset:0; transform:translateX(-120%);
+  background:linear-gradient(110deg,transparent 30%,#ffffff40 50%,transparent 70%); transition:transform 600ms ease; }
+.primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 12px 24px -8px #1f7a5c99; }
+.primary:hover:not(:disabled)::after { transform:translateX(120%); }
+.primary:active:not(:disabled) { transform:translateY(0) scale(.98); box-shadow:0 4px 10px -4px #1f7a5c99; }
+.text-button { transition:color 180ms ease; }
+.text-button:hover:not(:disabled) { color:#0f4d39; }
+
+/* ---------- 03 · Shake ---------- */
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%,75%{transform:translateX(-6px)} 50%{transform:translateX(6px)} }
+.is-error { animation:shake 380ms ease; }
+.is-error input[aria-invalid="true"] { box-shadow:0 0 0 4px #b3535822; }
+
+/* ---------- 04 · Spinner ---------- */
+@keyframes spin { to { transform:rotate(360deg); } }
+.spinner { animation:spin 800ms linear infinite; }
+
+/* ---------- 05 · Panel transition ---------- */
+.panel-enter-active,.panel-leave-active { transition:opacity 320ms ease, transform 320ms ease; }
+.panel-enter-from { opacity:0; transform:translateY(18px); }
+.panel-leave-to   { opacity:0; transform:translateY(-12px); }
+
+/* Welcome screen: gentle pop-in for the greeting */
+@keyframes pop { from{opacity:0;transform:scale(.96)} to{opacity:1;transform:none} }
+.welcome .profile-details { animation:pop 420ms 120ms ease both; }
+
+/* ---------- 06 · Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .field input,.primary,.primary::after,.text-button,.panel-enter-active,.panel-leave-active { transition:none; }
+  .is-error,.spinner,.intro::before,.intro::after,.welcome .profile-details { animation:none; }
+  .primary:hover:not(:disabled),.primary:active:not(:disabled),
+  .panel-enter-from,.panel-leave-to { transform:none; }
+  .primary:hover:not(:disabled)::after { transform:translateX(-120%); }
+}
